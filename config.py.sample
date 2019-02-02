@@ -1,0 +1,45 @@
+#!/usr/bin/env python
+import os
+
+REPLAYDIR = os.environ['TMP']
+REPLAYFILE = REPLAYDIR + "\\replay.server.battlelobby"
+
+###############################
+##      PLUGIN SETTINGS      ##
+###############################
+PLUGINS_DEBUG = True
+PLUGINS_ENABLED = {
+    "NotifyByPushover",
+    "NotifyByChromecast"
+}
+
+###############################
+## PLUGIN SPECIFIC VARIABLES ##
+###############################
+# Plugin: NotifyByPushover (Note: App requires once-off in app purchase)
+PUSHOVER_TOKEN = "<VALUEHERE>"
+PUSHOVER_USER = "<VALUEHERE>"
+PUSHOVER_DEVICE = "<VALUEHERE>"
+PUSHOVER_QUOTEFILE = "https://s3-ap-southeast-2.amazonaws.com/hotswatch/hotsquotes.txt"
+PUSHOVER_HIGHPRIORITY = True
+
+# Plugin: NotifyByChromecast
+CHROMECAST_TARGET = ""      # Case sensitive
+CHROMECAST_AUDIO_FILE = "https://s3-ap-southeast-2.amazonaws.com/hotswatch/countdown_medium.mp3"
+CHROMECAST_VOLUME = 0.5     # Between 0.0 and 1.0
+
+# Plugin: NotifyBySonos
+SONOS_AUDIO_FILE = "https://s3-ap-southeast-2.amazonaws.com/hotswatch/countdown_medium.mp3"
+SONOS_VOLUME = 30          # Between 0 and 100
+SONOS_TARGET_SPEAKERS = {
+    #"Kitchen",
+    #"Study",
+    #"Bathroom"
+}
+
+# Plugin: NotifyBySMS (clxcommunications.com)  (Note: Paid service)
+SMS_PLAN_ID = ""
+SMS_TOKEN = ""
+SMS_QUOTEFILE = "https://s3-ap-southeast-2.amazonaws.com/hotswatch/hotsquotes.txt"
+SMS_SOURCE = ""     # Must be a valid MSISDN, short code or alphanumeric originator (see https://www.clxcommunications.com/help/glossary-of-terms/originator-sender-id/)
+SMS_TARGET = ""
