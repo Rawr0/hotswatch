@@ -3,13 +3,20 @@ import os
 
 REPLAYDIR = os.environ['TMP']
 
+# INSTRUCTIONS
+# 1. Rename this file to config.py
+# 2. Uncomment the names of the plugins you wish to use
+# 3. Configure the relevant variables below
+
 ###############################
 ##      PLUGIN SETTINGS      ##
 ###############################
 PLUGINS_DEBUG = True
-PLUGINS_ENABLED = {
-    "NotifyByPushover",
-    "NotifyByChromecast"
+PLUGINS_ENABLED = {         
+    #"NotifyByPushover",
+    #"NotifyByChromecast",
+    #"NotifyBySonos",
+    #"NotifyBySMS"
 }
 
 ###############################
@@ -23,7 +30,7 @@ PUSHOVER_QUOTEFILE = "https://s3-ap-southeast-2.amazonaws.com/hotswatch/hotsquot
 PUSHOVER_HIGHPRIORITY = True
 
 # Plugin: NotifyByChromecast
-CHROMECAST_TARGET = ""      # Case sensitive
+CHROMECAST_TARGET = ""      # Name of the chromecast (Case sensitive)
 CHROMECAST_AUDIO_FILE = "https://s3-ap-southeast-2.amazonaws.com/hotswatch/countdown_medium.mp3"
 CHROMECAST_VOLUME = 0.5     # Between 0.0 and 1.0
 
