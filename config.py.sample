@@ -2,7 +2,6 @@
 import os
 
 REPLAYDIR = os.environ['TMP']
-REPLAYFILE = REPLAYDIR + "\\replay.server.battlelobby"
 
 ###############################
 ##      PLUGIN SETTINGS      ##
