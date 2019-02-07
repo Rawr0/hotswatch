@@ -97,21 +97,21 @@ class NotifyByPushover(Notifier):
         }
         requests.post('https://api.pushover.net/1/messages.json', postdata)
 
-class NotifyByChromecast(Notifier):
+class NotifyByGoogleHome(Notifier):
     def notify(self):
         chromecasts = pychromecast.get_chromecasts()
         [cc.device.friendly_name for cc in chromecasts]
 
         try:
-            cast = next(cc for cc in chromecasts if cc.device.friendly_name == cfg.CHROMECAST_TARGET)
+            cast = next(cc for cc in chromecasts if cc.device.friendly_name == cfg.GOOGLEHOME_TARGET)
                 
             # Wait for cast device to be ready
             cast.wait()
             mc = cast.media_controller
 
-            cast.set_volume(cfg.CHROMECAST_VOLUME)
+            cast.set_volume(cfg.GOOGLEHOME_VOLUME)
 
-            mc.play_media(cfg.CHROMECAST_AUDIO_FILE, 'audio/mp3')        
+            mc.play_media(cfg.GOOGLEHOME_AUDIO_FILE, 'audio/mp3')        
             mc.block_until_active()        
 
             mc.pause()
@@ -119,7 +119,7 @@ class NotifyByChromecast(Notifier):
             mc.play()
 
         except StopIteration:
-            print("NotifyByChromecast Failed - Check CHROMECAST_TARGET and try again (note: variable is case sensitive)")
+            print("NotifyByGoogleHome Failed - Check CHROMECAST_TARGET and try again (note: variable is case sensitive)")
 
 
 class NotifyBySonos(Notifier):

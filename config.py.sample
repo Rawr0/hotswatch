@@ -14,7 +14,7 @@ REPLAYDIR = os.environ['TMP']
 PLUGINS_DEBUG = True
 PLUGINS_ENABLED = {         
     #"NotifyByPushover",
-    #"NotifyByChromecast",
+    #"NotifyByGoogleHome",
     #"NotifyBySonos",
     #"NotifyBySMS"
 }
@@ -29,10 +29,10 @@ PUSHOVER_DEVICE = "<VALUEHERE>"
 PUSHOVER_QUOTEFILE = "https://s3-ap-southeast-2.amazonaws.com/hotswatch/hotsquotes.txt"
 PUSHOVER_HIGHPRIORITY = True
 
-# Plugin: NotifyByChromecast
-CHROMECAST_TARGET = ""      # Name of the chromecast (Case sensitive)
-CHROMECAST_AUDIO_FILE = "https://s3-ap-southeast-2.amazonaws.com/hotswatch/countdown_medium.mp3"
-CHROMECAST_VOLUME = 0.5     # Between 0.0 and 1.0
+# Plugin: NotifyByGoogleHome
+GOOGLEHOME_TARGET = ""      # Name of the chromecast (Case sensitive)
+GOOGLEHOME_AUDIO_FILE = "https://s3-ap-southeast-2.amazonaws.com/hotswatch/countdown_medium.mp3"
+GOOGLEHOME_VOLUME = 0.5     # Between 0.0 and 1.0
 
 # Plugin: NotifyBySonos
 SONOS_AUDIO_FILE = "https://s3-ap-southeast-2.amazonaws.com/hotswatch/countdown_medium.mp3"
