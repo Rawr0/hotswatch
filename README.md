@@ -18,7 +18,7 @@ HOTS creates a temporary `replay.server.battlelobby` file when entering a match.
 ## FAQ
 
 ### What game modes are supported
-* Versus AI, Quick Match, or any other game type which goes straight into match loading after matchmaking
+* Quick Match, Versus AI, or any other game type which goes straight into match loading after matchmaking
 * It is *not* suitable for modes which have a lobby prior to match loading (e.g. Hero/Team League)
 
 ### What notification types are supported
@@ -29,9 +29,9 @@ HOTS creates a temporary `replay.server.battlelobby` file when entering a match.
 
 * Additional notification types can be implemented by adding extra python code to `notifier.py`. Hotswatch will automatically instantiate and call the notify() method on all subclasses of the Notifier class defined within this file. 
 ```
-# class NotifyByMyDesiredMethod(Notifier):
-#     def notify(self):
-#       [Put your custom python code here]
+class NotifyByMyDesiredMethod(Notifier):
+     def notify(self):
+       [Put your custom python code here]
 ```
 
 ### What Operating Systems are supported
