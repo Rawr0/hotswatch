@@ -5,6 +5,7 @@ config.py
 .vscode/
 build/
 dist/
+*.ignore
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
