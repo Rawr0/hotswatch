@@ -29,19 +29,25 @@ class Notifier:
         cls.plugins.append(cls())
 
     def internalNotify(self, obj):
-        print("Triggering plugin: " + type(obj).__name__ + '\n')
-        sys.stdout.flush()
-        obj.notify()
+        try:
+            sys.stdout.write("Triggering plugin: " + type(obj).__name__ + "\n")
+            obj.notify()
+        except Exception as exc:
+            sys.stdout.write('Unexpected exception while processing {}. Error: {}\n'.format(type(obj).__name__, exc))
 
     def triggerNotificationThreaded(self):
         enabledPlugins = []
+
+        if len(cfg.PLUGINS_ENABLED) == 0:
+            print("You haven't enabled any notifications. Follow the README to get started")
+            return
 
         # Get enabled plugins
         for plugin in self.plugins:
             if type(plugin).__name__ in cfg.PLUGINS_ENABLED:
                 enabledPlugins.append(plugin)
 
-        pool = ThreadPool(4)
+        pool = ThreadPool(4)      
         pool.map(self.internalNotify, enabledPlugins)
         pool.close()
         pool.join()
@@ -49,8 +55,11 @@ class Notifier:
     def triggerNotification(self):
         for plugin in self.plugins:
             if type(plugin).__name__ in cfg.PLUGINS_ENABLED:
-                print("Triggering plugin: " + type(plugin).__name__)
-                plugin.notify()
+                try:
+                    sys.stdout.write("Triggering plugin: " + type(plugin).__name__ + "\n")
+                    plugin.notify()
+                except Exception as exc:
+                    sys.stdout.write('Unexpected exception while processing {}. Error: {}\n'.format(type(plugin).__name__, exc))
 
     @abstractmethod
     def notify(self, *test):
