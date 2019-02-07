@@ -30,16 +30,16 @@ class Notifier:
 
     def internalNotify(self, obj):
         try:
-            sys.stdout.write("Triggering plugin: " + type(obj).__name__ + "\n")
+            self.log("Triggering plugin: " + type(obj).__name__)
             obj.notify()
         except Exception as exc:
-            sys.stdout.write('Unexpected exception while processing {}. Error: {}\n'.format(type(obj).__name__, exc))
+            self.log('Unexpected exception while processing {}. Error: {}'.format(type(obj).__name__, exc))
 
     def triggerNotificationThreaded(self):
         enabledPlugins = []
 
         if len(cfg.PLUGINS_ENABLED) == 0:
-            print("You haven't enabled any notifications. Follow the README to get started")
+            self.log("You haven't enabled any notifications. Follow the README to get started")
             return
 
         # Get enabled plugins
@@ -56,10 +56,13 @@ class Notifier:
         for plugin in self.plugins:
             if type(plugin).__name__ in cfg.PLUGINS_ENABLED:
                 try:
-                    sys.stdout.write("Triggering plugin: " + type(plugin).__name__ + "\n")
+                    self.log("Triggering plugin: " + type(plugin).__name__)
                     plugin.notify()
                 except Exception as exc:
-                    sys.stdout.write('Unexpected exception while processing {}. Error: {}\n'.format(type(plugin).__name__, exc))
+                    self.log('Unexpected exception while processing {}. Error: {}'.format(type(plugin).__name__, exc))
+
+    def log(self, message):
+        sys.stdout.write(message + "\n")
 
     @abstractmethod
     def notify(self, *test):
@@ -119,7 +122,7 @@ class NotifyByGoogleHome(Notifier):
             mc.play()
 
         except StopIteration:
-            print("NotifyByGoogleHome Failed - Check CHROMECAST_TARGET and try again (note: variable is case sensitive)")
+            self.log("NotifyByGoogleHome Failed - Check CHROMECAST_TARGET and try again (note: variable is case sensitive)")
 
 
 class NotifyBySonos(Notifier):
@@ -129,14 +132,17 @@ class NotifyBySonos(Notifier):
         players = soco.discover()
         groupleader = None
         speakervolumes = {}     # Take note of all original speaker volumes
+        
+        if players is None:
+            self.log("No Sonos players detected, unable to notify")
 
         for player in players:
             state = player.get_current_transport_info()["current_transport_state"]
-            if(self.debug): print(player.player_name + " " + state)
+            if(self.debug): self.log(player.player_name + " " + state)
                         
             if(player.player_name in cfg.SONOS_TARGET_SPEAKERS and (state == "STOPPED" or state == "PAUSED_PLAYBACK")):
                 if(groupleader is None):
-                    if(self.debug): print(player.player_name + " will be the group leader")
+                    if(self.debug): self.log(player.player_name + " will be the group leader")
                     groupleader = player
                     groupleader.unjoin()
                 else:
@@ -147,19 +153,29 @@ class NotifyBySonos(Notifier):
                 player.volume = cfg.SONOS_VOLUME
                 
             else:
-                if(self.debug): print("Skipping " + player.player_name + " " + state)
+                if(self.debug): self.log("Skipping " + player.player_name + " " + state)
 
         if(groupleader is not None):
             groupleader.volume = cfg.SONOS_VOLUME
             groupleader.play_uri(cfg.SONOS_AUDIO_FILE)
-            
-            time.sleep(15)
 
-            # Tidy Up
-            groupleader.stop()
-            for player in groupleader.group:
-                player.unjoin()
-                player.volume = speakervolumes[player]
+            trackduration = 0
+            SLEEPDURATION = 2
+            MAXTRACKLENGTH = 120
+
+            # Wait until track has finished playing before resetting volumes and disbanding groups
+            while groupleader.get_current_transport_info()["current_transport_state"] != "STOPPED":
+                trackduration += SLEEPDURATION
+                time.sleep(SLEEPDURATION)
+
+                if(trackduration > MAXTRACKLENGTH):
+                    raise TimeoutError("NotifyBySonos was unable to detect end of soundfile and has exceeded maxiumum allowable wait time ({} seconds)".format(MAXTRACKLENGTH))
+            else:
+                # Tidy Up
+                groupleader.stop()
+                for player in groupleader.group:
+                    player.unjoin()
+                    player.volume = speakervolumes[player]
               
 
 class NotifyBySMS(Notifier):
@@ -190,4 +206,4 @@ class NotifyBySMS(Notifier):
         }
 
         res = requests.post('https://api.clxcommunications.com/xms/v1/{}/batches'.format(cfg.SMS_PLAN_ID), data=json.dumps(postdata), headers=headers)
-        if(self.debug): print(res.text)
+        if(self.debug): self.log(res.text)
