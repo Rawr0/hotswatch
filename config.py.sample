@@ -23,6 +23,7 @@ PLUGINS_ENABLED = {
 ## PLUGIN SPECIFIC VARIABLES ##
 ###############################
 # Plugin: NotifyByPushover (Note: App requires once-off in app purchase)
+# Token, user and device information can be found on your pushover.net account dashboard
 PUSHOVER_TOKEN = "<VALUEHERE>"
 PUSHOVER_USER = "<VALUEHERE>"
 PUSHOVER_DEVICE = "<VALUEHERE>"
@@ -30,7 +31,7 @@ PUSHOVER_QUOTEFILE = "https://s3-ap-southeast-2.amazonaws.com/hotswatch/hotsquot
 PUSHOVER_HIGHPRIORITY = True
 
 # Plugin: NotifyByGoogleHome
-GOOGLEHOME_TARGET = ""      # Name of the chromecast (Case sensitive)
+GOOGLEHOME_TARGET = ""      # Name of the Google Home or Chromecast (Case sensitive)
 GOOGLEHOME_AUDIO_FILE = "https://s3-ap-southeast-2.amazonaws.com/hotswatch/countdown_medium.mp3"
 GOOGLEHOME_VOLUME = 0.5     # Between 0.0 and 1.0
 
@@ -38,14 +39,16 @@ GOOGLEHOME_VOLUME = 0.5     # Between 0.0 and 1.0
 SONOS_AUDIO_FILE = "https://s3-ap-southeast-2.amazonaws.com/hotswatch/countdown_medium.mp3"
 SONOS_VOLUME = 30          # Between 0 and 100
 SONOS_TARGET_SPEAKERS = {
-    #"Kitchen",
+    #"Kitchen", 
     #"Study",
     #"Bathroom"
 }
 
-# Plugin: NotifyBySMS (clxcommunications.com)  (Note: Paid service)
+# Plugin: NotifyBySMS (sinch.com)  (Note: Paid service)
+# Note: The SMS provider is currently going through a rebranding and, as a result, the APIs below could stop working. 
+# If any issues are encountered, please raise an issue on Github
 SMS_PLAN_ID = ""
 SMS_TOKEN = ""
 SMS_QUOTEFILE = "https://s3-ap-southeast-2.amazonaws.com/hotswatch/hotsquotes.txt"
-SMS_SOURCE = ""     # Must be a valid MSISDN, short code or alphanumeric originator (see https://www.clxcommunications.com/help/glossary-of-terms/originator-sender-id/)
-SMS_TARGET = ""
+SMS_SOURCE = ""     # Must be a valid MSISDN, short code or alphanumeric originator (see https://www.sinch.com/docs/sms/http-rest.html#request)
+SMS_TARGET = ""     # Destination phone number, including country code (eg. +15555551234 or +61411000000)
