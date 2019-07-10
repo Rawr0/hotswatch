@@ -25,7 +25,7 @@ HOTS creates a temporary `replay.server.battlelobby` file when entering a match.
 * Out of the box hotswatch supports the following notification types:
     * [Pushover](https://pushover.net) push notifications (e.g. iOS/Android),
     * audio clips via Sonos/Google Home
-    * SMS notifications (via clxcommunications.com)
+    * SMS notifications (via sinch.com)
 
 * Additional notification types can be implemented by adding extra python code to `notifier.py`. Hotswatch will automatically instantiate and call the notify() method on all subclasses of the Notifier class defined within this file. 
 ```
